@@ -1,0 +1,23 @@
+{
+    "name": "log-rite",
+    "version": "2.4.6",
+    "description": "Highly customizable logger middleware with multiple templates based on responses.",
+    "main": "index.js",
+    "scripts": {
+        "test": "mocha",
+        "preversion": "npm test",
+        "junit": "mocha -R mocha-junit-reporter",
+        "mddocs": "jsdoc2md index.js lib/**/*.js > ./API.md"
+    },
+    "author": {
+        "name": "Julian Jensen",
+        "email": "jjdanois@gmail.com"
+    },
+    "repository": "https://github.com/julianjensen/log-rite.git",
+    "license": "MIT",
+    "dependencies": {
+        "ansi-styles": "^3.1.0",
+        "on-finished": "^2.3.0",
+        "on-headers": "^1.0.1"
+    }
+}
