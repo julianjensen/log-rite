@@ -1,7 +1,8 @@
 /** ****************************************************************************************************
- * File: logger-service
+ * File: log-rite
  * @author Julian Jensen <jjdanois@gmail.com> on 9/8/16
  * @version 2.4.6
+ * This originally started out as winston but has been almost entirely changed.
  *******************************************************************************************************/
 'use strict';
 
@@ -359,11 +360,11 @@ class Logger
     /**
      * @typedef {object} LoggerOptions
      * @property {string} [logLevel='TRACE']        - Minimum log level to actually output
-     * @property {string} [logFormat='mmmdirect']    - The format to use for direct log statements, i.e. log.info( 'Blah' )
+     * @property {string} [logFormat='direct']    - The format to use for direct log statements, i.e. log.info( 'Blah' )
      * @property {object<string, string>} [formats] - An object with keys being the format name and the string value the template
      * @property {object<string, function>} [tokens] - Additional user token definitions
      * @property {object} [stream=process.stdout]   - Stream to write to
-     * @property {string} [useFormat='mmm']          - The default loggin format for requests
+     * @property {string} [useFormat='standard']          - The default loggin format for requests
      * @property {boolean} [immediate=false]        - Output log message upon request received rather than on the response
      */
 
