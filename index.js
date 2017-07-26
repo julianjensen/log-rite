@@ -6,6 +6,9 @@
 'use strict';
 
 const
+    CONTENT_LENGTH = Symbol( 'hidden_content_length' ),
+    DEFAULT_BUFFER_DURATION = 1000,
+
     style = require( 'ansi-styles' ),
     onFinished = require( 'on-finished' ),
     onHeaders  = require( 'on-headers' ),
@@ -19,14 +22,7 @@ const
         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ],
-    contentLength = o => {
-        if ( !o || !o.headers || !o.headers[ 'content-length' ] )
-        {
-            return o[ CONTENT_LENGTH ] || 0;
-        }
-
-        return o.headers[ 'content-length' ];
-    },
+    contentLength = o => !o || !o.headers || !o.headers[ 'content-length' ] ? o[ CONTENT_LENGTH ] || 0 : o.headers[ 'content-length' ],
     logLevelNames = [
         'ALL',
         'TRACE',
@@ -40,8 +36,6 @@ const
     ],
     missingError = 'no response or no error in res.LOG_ERROR',
     logLevels = {},
-    DEFAULT_BUFFER_DURATION = 1000,
-    CONTENT_LENGTH = Symbol( 'hidden_content_length' ),
     _tokens = {},
     _formats = {},
     getip = req => {
@@ -126,19 +120,19 @@ class Logger
     {
         /** @type {number} */
         this._level = logLevelNames.indexOf( 'INFO' );
-        this.logFormat = 'mmmdirect';
+        this.logFormat = 'direct';
 
         this._LOG_ERROR = Symbol( "For attaching the error object" );
 
         /**
-         * Planet3 standard request logging format.
+         * Standard request logging format.
          */
-        this.format( "mmm", ":on:date[iso] [:level] [:auth] [:status]:off - :request[baseUrl] | :method :url" );
+        this.format( "standard", ":on:date[iso] [:level] [:auth] [:status]:off - :request[baseUrl] | :method :url" );
         // this.format( "mmm", ":on:date[iso] [:level] [:auth] [:status]:off - :res[content-length] bytes | :response-time[3] ms | :method :url" );
         /**
-         * Planet3 standard direct logging format.
+         * Standard direct logging format.
          */
-        this.format( "mmmdirect", ":note:date[iso] [:level]:off - :msg" );
+        this.format( "direct", ":note:date[iso] [:level]:off - :msg" );
         /**
          * Apache combined log format.
          */
@@ -295,8 +289,7 @@ class Logger
     }
 
     /**
-     * Define a token function with the given name,
-     * and callback fn(req, res).
+     * Define a token function with the given name, and callback fn(req, res).
      *
      * @param {string} name
      * @param {function} fn
@@ -310,6 +303,7 @@ class Logger
 
     /**
      * Sets the log level to use.
+     *
      * @param {string} logLevel - The log level to use.
      */
     set level( logLevel )
